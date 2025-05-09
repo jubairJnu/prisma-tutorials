@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ~ shcema and model
+
+// model Post {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())  // now()
+//   updatedAt DateTime @updatedAt
+//   title     String   @db.VarChar(255)  //
+//   content   String?
+//   published Boolean  @default(false)
+//   author    User     @relation(fields: [authorId], references: [id])
+//   authorId  Int
+// }
+
+// model Profile {
+//   id     Int     @id @default(autoincrement())
+//   bio    String?
+//   user   User    @relation(fields: [userId], references: [id])
+//   userId Int     @unique
+// }
+
+// model User {
+//   id      Int      @id @default(autoincrement())  // 1 ,2 , 3
+//   email   String   @unique    // 
+//   name    String?   
+//   posts   Post[]    /// [] one to many
+//   profile Profile?
+// }
+
+// Relation user to movie many to many relation 3.
+
+model User {
+  id String @id @default(uuid())
+  name String 
+  email String @unique
+  password String 
+  watchlist Movie[]
+  Movie Movie[] @relation("watchlist")
+  @@map("users")
+  Review Review[]
+}
+
+
+model Movie {
+  id String @id @default(uuid())
+  name String
+  releaseDate DateTime 
+  director String
+  
+  genre String
+watchlistBy User[] @relation("watchlist")
+revies Review[]
+  @@map("movies")
+  User User[]
+}
+
+model Review {
+  id String @id @default(uuid())
+  ratinng Float
+  comment String
+  movie Movie @relation(fields: [movieId], references: [id])
+  movieId String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+}
