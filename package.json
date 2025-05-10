@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create": "ts-node-dev --respawn --transpile-only src/create.ts",
+    "find": "ts-node-dev --respawn --transpile-only src/find.ts"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +16,9 @@
     "prisma": "^6.7.0",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.7.0",
+    "ts-node-dev": "^2.0.0"
   }
 }
