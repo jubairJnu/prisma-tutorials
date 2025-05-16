@@ -5,11 +5,18 @@ const prisma = new PrismaClient();
 async function main() {
   const createUser = await prisma.user.create({
     data: {
-      name: "Shawon",
-      email: "rahim1@example.com",
+      name: "Shakib Khan",
+      email: "shakib1@example.com",
       password: "123456",
+      watchList: {
+        connect: [{ id: "a475333d-50b3-46b0-8cf8-f09ae0d9a6af" }],
+      },
+    },
+    include: {
+      watchList: true,
     },
   });
+
   console.log(createUser, "create user response");
 
   // ? create multiple movie
