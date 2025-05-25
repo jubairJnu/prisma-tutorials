@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 
 async function main() {
   // ! Find Many
-  // const findMovies = await prisma.movie.findMany();
+  const findMovies = await prisma.movie.findMany();
 
-  // console.log(findMovies, "movies");
+  console.log(findMovies, "movies");
 
   // ! find unique
 
@@ -28,14 +28,7 @@ async function main() {
   //   },
   // });
   // ! find with error
-  const findFirst = await prisma.user.findUniqueOrThrow({
-    where: {
-      email: "shakil@example2.com",
-    },
-    include: {
-      watchList: true,
-    },
-  });
+  const findFirst = await prisma.user.findMany();
 
   console.log(findFirst, "find data");
 }
