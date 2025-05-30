@@ -51,28 +51,75 @@ async function main() {
 
   //  task 2
 
-  const result = await prisma.user.findMany({
-    where: {
-      AND: [
-        {
-          review: { some: {} },
-        },
-        {
-          watchList: { some: {} },
-        },
-      ],
+  // const result = await prisma.user.findMany({
+  //   where: {
+  //     AND: [
+  //       {
+  //         review: { some: {} },
+  //       },
+  //       {
+  //         watchList: { some: {} },
+  //       },
+  //     ],
+  //   },
+  //   include: {
+  //     review: true,
+  //     watchList: {
+  //       select: {
+  //         name: true,
+  //       },
+  //     },
+  //   },
+  // });
+
+  // const result = await prisma.movie.findMany({
+  //   include: {
+  //     review: {
+  //       select: {
+  //         rating: true,
+  //       },
+  //     },
+  //   },
+
+  //   orderBy: {
+  //     review: {
+  //       _avg: {
+  //         rating: "desc",
+  //       },
+  //     },
+  //   },
+  //   take: 3,
+  // });
+
+  // ? group kora
+  // ? average ber kora
+  // abc 3 cdc 4 3, 4, 5, 6,
+
+  const resultAvg = await prisma.review.groupBy({
+    by: ["movieId"],
+    _avg: {
+      rating: true,
     },
-    include: {
-      review: true,
-      watchList: {
-        select: {
-          name: true,
-        },
+
+    orderBy: {
+      _avg: {
+        rating: "desc",
+      },
+    },
+    take: 3,
+  });
+
+  const mId = await resultAvg.map((m) => m.movieId);
+
+  const result = await prisma.movie.findMany({
+    where: {
+      id: {
+        in: mId,
       },
     },
   });
 
-  console.log(result);
+  console.log(result, "top movies", resultAvg);
 }
 
 main();
